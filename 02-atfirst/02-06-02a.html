@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>vue.js first</title>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+
+<body>
+<div id="app">
+  <button id="b-button" v-bind:title="loggedInButton">buy</button>
+</div>
+
+<script>
+
+/**
+ * show the message at mouse-over.
+ */
+console.assert(typeof Vue !== 'undefined');
+
+let vm = new Vue({
+  el: '#b-button',
+  data: {
+    loggedInButton: 'you can buy',
+  }
+});
+
+
+</script>
+</body>
+</html>

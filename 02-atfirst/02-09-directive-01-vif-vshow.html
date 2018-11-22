@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>vue.js 2.8. directive</title>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+
+<body>
+<div id="app">
+  <p>{{ items[0].name }}: {{ items[0].price }} x {{ items[0].quantity }}</p>
+  <p>total: {{ totalPrice | numberWithDelimiter }} </p>
+  <p>total with tax: {{ totalPriceWithTax | numberWithDelimiter }} </p>
+  <p v-show="!canBuy">
+    you can buy from over {{ 1000 | numberWithDelimiter }}
+  </p>
+</div>
+
+<script>
+console.assert(typeof Vue !== 'undefined');
+
+let items = [
+  {
+    name: 'apple',
+    price: 300,
+    quantity: 0,
+  },
+  {
+    name: 'banana',
+    price: 400,
+    quantity: 1,
+  },
+  {
+    name: 'cherry',
+    price: 500,
+    quantity: 1,
+  },
+]
+
+const TAX_RATE = 1.08
+const MINIMUM_PRICE = 1000
+
+let vm = new Vue({
+  el: '#app',
+  data: {
+    items: items,
+  },
+  filters: {
+    numberWithDelimiter: function(value) {
+    if (!value) {
+      return '0'
+    }
+    return value.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1,')
+    },
+  },
+  computed: {
+    totalPrice: function() {
+      return this.items.reduce(function(sum, item) {
+        return sum + (item.price * item.quantity)
+      }, 0)
+    },
+    totalPriceWithTax: function() {
+      return Math.floor(this.totalPrice * TAX_RATE)
+    },
+    canBuy: function() {
+      return this.totalPrice >= MINIMUM_PRICE
+    },
+  },
+});
+
+window.vm = vm
+
+console.log(vm.totalPrice)
+
+</script>
+</body>
+</html>

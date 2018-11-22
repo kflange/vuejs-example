@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>vue.js 2.9.4 v-on</title>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+
+<body>
+<div id="app">
+  <ul>
+    <li v-for="item in items" v-bind:key="item.name">
+      number of {{ item.name }}:
+      <input
+        type="number"
+        v-on:input="item.quantity = $event.target.value"
+        v-bind.value="item.quantity"
+        min="0">
+    </li>
+  </ul>
+
+  <hr>
+
+  <div v-bind:style="errorMessageStyle">
+    <ul>
+      <li v-for="item in items" v-bind:key="item.name">
+        {{ item.name }}: {{ item.price }} x {{ item.quantity }} = {{ item.price * item.quantity | numberWithDelimiter }}
+      </li>
+    </ul>
+    <p>{{ items[0].name }}: {{ items[0].price }} x {{ items[0].quantity }}</p>
+    <p>subtotal: {{ totalPrice | numberWithDelimiter}}</p>
+    <p>total(with tax): {{ totalPriceWithTax | numberWithDelimiter}}</p>
+    <p v-show="!canBuy">you can buy from over {{ 1000 | numberWithDelimiter }}</p>
+
+  </div>
+
+  <!--
+  <div v-bind:style="errorMessageStyle">
+        {{ item.name }}: {{ item.price }} x {{ item.quantity }} = {{ item.price * item.quantity | numberWithDelimiter }}
+      </li>
+  </div>
+  -->
+</div>
+
+<script>
+console.assert(typeof Vue !== 'undefined');
+
+let items = [
+  {
+    name: 'apple',
+    price: 300,
+    quantity: 0,
+  },
+  {
+    name: 'banana',
+    price: 400,
+    quantity: 0,
+  },
+  {
+    name: 'cherry',
+    price: 500,
+    quantity: 0,
+  },
+];
+
+const TAX_RATE = 1.08;
+const MINIMUM_PRICE = 1000;
+
+let vm = new Vue({
+  el: '#app',
+  data: {
+    items: items,
+  },
+  filters: {
+    numberWithDelimiter: function(value) {
+      if (!value) {
+        return '0'
+      }
+      return value.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1,')
+    },
+  },
+  computed: {
+    totalPrice: function() {
+      return this.items.reduce(function(sum, item) {
+        return sum + (item.price * item.quantity)
+      }, 0);
+    },
+    totalPriceWithTax: function() {
+      return Math.floor(this.totalPrice * TAX_RATE);
+    },
+    canBuy: function() {
+      return this.totalPrice >= MINIMUM_PRICE;
+    },
+    errorMessageStyle: function() {
+      return {
+        border: (this.canBuy ? '' :  '1px solid red'),
+        color: (this.canBuy ? '' : 'red'),
+      }
+    },
+  },
+});
+
+window.vm = vm
+
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>vue.js first</title>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+
+<body>
+<div id="app">
+  <p>{{ items[0].name }}</p>
+</div>
+
+<script>
+console.assert(typeof Vue !== 'undefined');
+
+let items = [
+  {
+    name: 'apple',
+    price: 300,
+    quantity: 0,
+  },
+  {
+    name: 'banana',
+    price: 400,
+    quantity: 0,
+  },
+  {
+    name: 'cherry',
+    price: 500,
+    quantity: 0,
+  },
+]
+
+
+let vm = new Vue({
+  el: '#app',
+  data: {
+    items: items,
+  }
+});
+
+vm.$watch(function() {
+    return this.items[0].quantity
+}, function(quantity) {
+  console.log(quantity);
+})
+
+</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>vue.js 2.8. computed</title>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+
+<body>
+<div id="app">
+  <p>total: {{ totalPrice }} </p>
+</div>
+
+<script>
+console.assert(typeof Vue !== 'undefined');
+
+let items = [
+  {
+    name: 'apple',
+    price: 300,
+    quantity: 0,
+  },
+  {
+    name: 'banana',
+    price: 400,
+    quantity: 1,
+  },
+  {
+    name: 'cherry',
+    price: 500,
+    quantity: 1,
+  },
+]
+
+
+let vm = new Vue({
+  el: '#app',
+  data: {
+    items: items,
+  },
+  filters: {
+    numberWithDelimiter: function(value) {
+    if (!value) {
+      return '0'
+    }
+    return value.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1,')
+    },
+  },
+  computed: {
+    totalPrice: function() {
+      return this.items.reduce(function(sum, item) {
+        return sum + (item.price * item.quantity)
+      }, 0)
+    },
+    totalPriceWithTax: function() {
+      return Math.floor(this.totalPrice * 1.08)
+    },
+  },
+});
+
+console.log(vm.totalPrice)
+
+</script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>vue.js 2.7. filters</title>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+
+<body>
+<div id="app">
+  <p>{{ items[0].name }}: {{ items[0].price }}: x {{ items[0].quantity }}</p>
+  <p>filter example: {{1000 | numberWithDelimiter}}</p>
+</div>
+
+<script>
+/**
+ * 1000 to 1,000
+ */
+console.assert(typeof Vue !== 'undefined');
+
+let items = [
+  {
+    name: 'apple',
+    price: 300,
+    quantity: 0,
+  },
+  {
+    name: 'banana',
+    price: 400,
+    quantity: 0,
+  },
+  {
+    name: 'cherry',
+    price: 500,
+    quantity: 0,
+  },
+]
+
+
+let vm = new Vue({
+  el: '#app',
+  data: {
+    items: items,
+  },
+  filters: {
+    numberWithDelimiter: function(value) {
+    if (!value) {
+      return '0'
+    }
+    return value.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1,')
+    },
+  },
+});
+
+
+</script>
+</body>
+</html>
