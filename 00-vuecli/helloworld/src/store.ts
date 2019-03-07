@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 Vue.use(Vuex);
-const store = new Vuex.Store({
+const store: any = new Vuex.Store({
   state: {
     tasks: [
       {
@@ -15,7 +15,29 @@ const store = new Vuex.Store({
         name: "buy book",
         done: true
       }
-    ]
+    ],
+    nextTaskID: 3
+  },
+
+  mutations: {
+    addTask(state, { name }) {
+      state.tasks.push({
+        id: state.nextTaskID,
+        name,
+        done: false
+      });
+      state.nextTaskID++;
+    },
+
+    toggleTaskStatus(state, { id }) {
+      const filtered = state.tasks.filter(task => {
+        return task.id === id;
+      });
+
+      filtered.forEach(task => {
+        task.done = !task.done;
+      });
+    }
   }
 });
 
