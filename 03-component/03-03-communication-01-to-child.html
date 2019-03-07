@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>vue.js component</title>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+
+<body>
+<div id="fruits-component">
+  <ol>
+    <fruits-item-name
+      v-for="fruit in fruitsItems"
+      v-bind:key="fruit.name"
+      v-bind:fruits-item="fruit"></fruits-item-name>
+  </ol>
+</div>
+
+<script>
+console.assert(typeof Vue !== 'undefined');
+
+Vue.component('fruits-item-name', {
+  props: {
+    fruitsItem: {
+      type: Object,
+      required: true,
+    },
+  },
+  template: '<li>{{ fruitsItem.name }}</li>',
+});
+
+const app = new Vue({
+  el: '#fruits-component',
+  data: {
+    fruitsItems: [
+      {name: 'apple'},
+      {name: 'banana'},
+    ],
+  },
+});
+</script>
+</body>
+</html>

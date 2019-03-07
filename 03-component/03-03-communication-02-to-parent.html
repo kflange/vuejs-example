@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>vue.js component</title>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+
+<body>
+<div id="fruits-counter">
+  <div v-for="fruit in fruits">
+    {{ fruit.name }}: <counter-button v-on:increment="incrementCartStatus()"></counter-button>
+  </div>
+  <p>total: {{ total }}</p>
+</div>
+
+<script>
+console.assert(typeof Vue !== 'undefined');
+
+let counterButton = Vue.extend({
+  template: '<span>{{ counter }} [-] <button v-on:click="addToCart">add</button></span>',
+  data: function() {
+    return {
+      counter: 0
+    }
+  },
+  methods: {
+    addToCart: function() {
+      this.counter += 1;
+      this.$emit('increment');
+    }
+  },
+});
+
+
+new Vue({
+  el: '#fruits-counter',
+  compoents: {
+    'counter-button': counterButton,
+  },
+  data: {
+    total: 0,
+    fruits: [
+      {name: 'apple'},
+      {name: 'banana'},
+    ],
+  },
+  methods: {
+    incrementCartStatus: function() {
+      this.total += 1;
+    },
+  },
+});
+</script>
+</body>
+</html>
