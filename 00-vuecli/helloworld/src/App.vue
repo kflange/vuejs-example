@@ -55,6 +55,10 @@
         no filter
       </li>
     </ul>
+
+    <h2>save and resotre</h2>
+    <button type="button" v-on:click="save">save</button>
+    <button type="button" v-on:click="restore">restore</button>
   </div>
 </template>
 
@@ -123,6 +127,14 @@ export default class App extends Vue {
     this.$store.commit("changeFilter", {
       filter: labelID
     });
+  }
+
+  save() {
+    this.$store.dispatch("save");
+  }
+
+  restore() {
+    this.$store.dispatch("restore");
   }
 }
 </script>
