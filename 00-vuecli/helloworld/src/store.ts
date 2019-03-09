@@ -35,7 +35,24 @@ const store: any = new Vuex.Store({
     ],
 
     nextTaskID: 3,
-    nextLabelID: 4
+    nextLabelID: 4,
+
+    filter: null
+  },
+
+  getters: {
+    filteredTasks(state: any) {
+      if (!state.filter) {
+        return state.tasks;
+      }
+      //if (state.filter === null) {
+      //  return state.tasks;
+      //}
+
+      return state.tasks.filter((task: any) => {
+        return task.labelIDs.indexOf(state.filter) >= 0;
+      });
+    }
   },
 
   mutations: {
@@ -50,11 +67,11 @@ const store: any = new Vuex.Store({
     },
 
     toggleTaskStatus(state, { id }) {
-      const filtered = state.tasks.filter(task => {
+      const filtered = state.tasks.filter((task: any) => {
         return task.id === id;
       });
 
-      filtered.forEach(task => {
+      filtered.forEach((task: any) => {
         task.done = !task.done;
       });
     },
@@ -65,6 +82,10 @@ const store: any = new Vuex.Store({
         text
       });
       state.nextLabelID++;
+    },
+
+    changeFilter(state, { filter }) {
+      state.filter = filter;
     }
   }
 });
