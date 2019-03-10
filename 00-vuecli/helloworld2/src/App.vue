@@ -6,6 +6,7 @@
         <input
           type="checkbox"
           v-bind:checked="task.done"
+          v-on:change="toggleTaskStatus(task)"
         />
         {{ task.name }}
       </li>
@@ -16,7 +17,8 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { taskModule } from '@/store/modules/task';
+import { ITask, taskModule } from '@/store/modules/task';
+import store from '@/store/store';
 
 @Component({
   components: {
@@ -24,12 +26,16 @@ import { taskModule } from '@/store/modules/task';
 })
 export default class App extends Vue {
 
-  get tasks() {
+  get tasks(): ITask[] {
     return taskModule.tasks;
   }
 
+  public toggleTaskStatus(task: ITask): void {
+    taskModule.toggleTaskStatus(task.id);
+  }
 }
 </script>
+
 
 <style lang="stylus">
 </style>

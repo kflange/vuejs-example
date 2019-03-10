@@ -1,4 +1,4 @@
-import { Module, VuexModule, getModule } from 'vuex-module-decorators';
+import { Action, Module, Mutation, VuexModule, getModule } from 'vuex-module-decorators';
 import store from '@/store/store';
 
 export interface ITask {
@@ -29,6 +29,19 @@ class Tasks extends VuexModule implements ITaskList {
        done: true,
      },
   ];
+
+  @Mutation
+  public toggleTaskStatus(id: number): void {
+    const filteredTask = this.tasks.filter((task) => {
+      if (task.id === id) {
+        return task;
+      }
+    });
+
+    filteredTask.forEach((task) => {
+      task.done = !task.done;
+    });
+  }
 }
 
 export const taskModule = getModule(Tasks);

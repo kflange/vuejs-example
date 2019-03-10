@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { ITaskList, taskModule } from '@/store/modules/task';
+import { ITaskList } from '@/store/modules/task';
 
 Vue.use(Vuex);
 
