@@ -16,6 +16,22 @@
       <input type="text" v-model="newTaskName" placeholder="new task" />
     </form>
 
+    <h2>label list</h2>
+    <ul>
+      <li v-for="label in labels" v-bind:key="label.id">
+        <input
+          type="checkbox"
+          v-bind:value="label.id"
+          v-model="newTaskLabelIDs"
+        />
+        {{ label.text }}
+      </li>
+    </ul>
+
+    <form v-on:submit.prevent="addLabel">
+      <input type="text" v-model="newLabelText" placeholder="new label" />
+    </form>
+
   </div>
 </template>
 
@@ -23,6 +39,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { ITask, taskModule } from '@/store/modules/task';
+import { ILabel, labelModule } from '@/store/modules/label';
 import store from '@/store/store';
 
 @Component({
@@ -32,7 +49,8 @@ import store from '@/store/store';
 export default class App extends Vue {
 
   private newTaskName: string = '';
-  private newLablelIDs: number[] = [];
+  private newTaskLabelIDs: number[] = [];
+  private newLabelText: string = '';
 
   get tasks(): ITask[] {
     return taskModule.tasks;
@@ -43,7 +61,19 @@ export default class App extends Vue {
   }
 
   private addTask() {
-    taskModule.addTask(this.newTaskName, this.newLablelIDs);
+    taskModule.addTask(this.newTaskName, this.newTaskLabelIDs);
+    this.newTaskName = '';
+    this.newTaskLabelIDs = [];
+  }
+
+  get labels(): ILabel[] {
+    return labelModule.labels;
+  }
+
+  private addLabel() {
+    labelModule.addLabel(this.newLabelText);
+    this.newLabelText = '';
+
   }
 }
 </script>
