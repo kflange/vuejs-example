@@ -10,4 +10,4 @@ export interface State {
   labels: ILabelList;
 }
 
-export default new Vuex.Store({});
+export default new Vuex.Store<State>({});

@@ -10,6 +10,7 @@ export interface ILabel {
 export interface ILabelList {
   labels: ILabel[];
   nextLabelID: number;
+  filter: number;
 }
 
 
@@ -31,6 +32,7 @@ class Labels extends VuexModule implements ILabelList {
   ];
 
   public nextLabelID = 4;
+  public filter = 0;
 
   @Mutation
   public addLabel(label: string) {

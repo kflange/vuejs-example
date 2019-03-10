@@ -9,6 +9,10 @@
           v-on:change="toggleTaskStatus(task)"
         />
         {{ task.name }}
+        -
+        <span v-for="id in task.labelIDs" v-bind:key="id">
+          {{ getLabelText(id) }},
+        </span>
       </li>
     </ul>
 
@@ -32,6 +36,25 @@
       <input type="text" v-model="newLabelText" placeholder="new label" />
     </form>
 
+    <h2>label filter</h2>
+    <ul>
+      <li v-for="label in labels" v-bind:key="label.id">
+        <input
+          type="radio"
+          v-bind:checked="label.id === filter"
+          v-on:change="changeFilter(label.id)"
+        />
+        {{ label.text }}
+      </li>
+      <li>
+        <input
+          type="radio"
+          v-bind:checked="filter === null"
+          v-on:change="changeFilter(null)"
+        />
+        no filter
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -53,7 +76,8 @@ export default class App extends Vue {
   private newLabelText: string = '';
 
   get tasks(): ITask[] {
-    return taskModule.tasks;
+    // return taskModule.tasks;
+    return taskModule.filteredTasks;
   }
 
   private toggleTaskStatus(task: ITask): void {
@@ -70,10 +94,22 @@ export default class App extends Vue {
     return labelModule.labels;
   }
 
+  get filter(): number {
+    return taskModule.filteredNumber;
+  }
+
   private addLabel() {
     labelModule.addLabel(this.newLabelText);
     this.newLabelText = '';
+  }
 
+  private getLabelText(id: number) {
+    const label = labelModule.labels.filter((x: ILabel) => x.id === id)[0];
+    return label ? label.text : '';
+  }
+
+  private changeFilter(filteredNumber: number) {
+      taskModule.setFilter(filteredNumber);
   }
 }
 </script>

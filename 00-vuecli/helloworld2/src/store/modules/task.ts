@@ -11,6 +11,7 @@ export interface ITask {
 export interface ITaskList {
   tasks: ITask[];
   nextTaskID: number;
+  filteredNumber: number;
 }
 
 
@@ -32,6 +33,7 @@ class Tasks extends VuexModule implements ITaskList {
   ];
 
   public nextTaskID = 3;
+  public filteredNumber = 0;
 
   @Mutation
   public toggleTaskStatus(id: number): void {
@@ -55,6 +57,20 @@ class Tasks extends VuexModule implements ITaskList {
       done: false,
     });
     this.nextTaskID++;
+  }
+
+  @Mutation
+  public setFilter(labelID: number) {
+    this.filteredNumber = labelID;
+  }
+
+  get filteredTasks() {
+    if (!this.filteredNumber) {
+      return this.tasks;
+    }
+    return taskModule.tasks.filter((task: ITask) => {
+      return task.labelIDs.indexOf(taskModule.filteredNumber) >= 0;
+    });
   }
 }
 
