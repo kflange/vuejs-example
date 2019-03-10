@@ -11,6 +11,11 @@
         {{ task.name }}
       </li>
     </ul>
+
+    <form v-on:submit.prevent="addTask">
+      <input type="text" v-model="newTaskName" placeholder="new task" />
+    </form>
+
   </div>
 </template>
 
@@ -26,12 +31,19 @@ import store from '@/store/store';
 })
 export default class App extends Vue {
 
+  private newTaskName: string = '';
+  private newLablelIDs: number[] = [];
+
   get tasks(): ITask[] {
     return taskModule.tasks;
   }
 
-  public toggleTaskStatus(task: ITask): void {
+  private toggleTaskStatus(task: ITask): void {
     taskModule.toggleTaskStatus(task.id);
+  }
+
+  private addTask() {
+    taskModule.addTask(this.newTaskName, this.newLablelIDs);
   }
 }
 </script>
