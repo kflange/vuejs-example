@@ -16,6 +16,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { taskModule } from '@/store/modules/task';
 
 @Component({
   components: {
@@ -24,7 +25,7 @@ import { Component, Vue } from 'vue-property-decorator';
 export default class App extends Vue {
 
   get tasks() {
-    return this.$store.state.tasks;
+    return taskModule.tasks;
   }
 
 }
